@@ -1,0 +1,143 @@
+﻿@model IEnumerable<ProductsModels.Product>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Filter Products</h2>
+
+@using (Html.BeginForm("Index", "Products", FormMethod.Get, new { @class = "form-horizontal" }))
+{
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="ProductName">Product Name :</label>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" id="ProductName" name="ProductName"
+                   placeholder="Enter Product Name" value="@Request["ProductName"]">
+        </div>
+        <label class="control-label col-sm-2" for="Size">Size:</label>
+        <div class="col-sm-4">
+            @*<input type="text" class="form-control" id="Size" name="Size" placeholder="Enter Size">*@
+            <select class="form-control" id="Size" name="Size">
+                <option value="-1">-- Select Size --</option>
+                <option value="L">Large</option>
+                <option value="M">Medium</option>
+                <option value="S">Small</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="Price">Price :</label>
+        <div class="col-sm-4">
+            <input type="number" class="form-control" id="Price" name="Price"
+                   placeholder="Enter Price" value="@Request["Price"]">
+        </div>
+        <label class="control-label col-sm-2" for="MfgDate">Manufacturing Date:</label>
+        <div class="col-sm-4">
+            <input type="date" class="form-control" id="MfgDate" name="MfgDate" value="@Request["MfgDate"]"
+                   placeholder="Enter Mfg Date">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="Category">Category :</label>
+        <div class="col-sm-4">
+            @*<input type="text" class="form-control" id="Category" name="Category"
+                placeholder="Enter Category">*@
+            <select class="form-control" id="Category" name="Category">
+                <option value="-1">-- Select Category --</option>
+                <option value="Standard">Standard</option>
+                <option value="Premium">Premium</option>
+                <option value="Economy">Economy</option>
+            </select>
+        </div>
+        <label class="control-label col-sm-2" for="Conjuction">Conjuction Choice:</label>
+        <div class="col-sm-4">
+            <select class="form-control" id="searchOption" name="searchOption">
+                <option value="-1">-- Search Conjuction --</option>
+                <option value="OR">OR</option>
+                <option value="AND">AND</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-primary" id="btnSearch">Search</button>
+            <button type="submit" class="btn btn-warning" id="btnClear">Clear</button>
+        </div>
+    </div>
+}
+
+@Html.Partial("_ProductsList", Model)
+
+@*<h2>Products</h2>
+
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Size)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MfgDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Category)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Size)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MfgDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category)
+                </td>
+            </tr>
+        }
+
+    </table>*@
+
+<script>
+    $(function () {
+        $("#Size").val(getUrlVars()["Size"] == undefined ? '-1' : getUrlVars()["Size"]);
+        $("#Category").val(getUrlVars()["Category"] == undefined ? '-1' : getUrlVars()["Category"]);
+        $("#searchOption").val(getUrlVars()["searchOption"] == undefined ? '-1' : getUrlVars()["searchOption"]);
+
+        $("#btnClear").click(function () {
+            $("#ProductName").val('');
+            $("#Size").val('-1');
+            $("#Price").val('');
+            $("#MfgDate").val('');
+            $("#Category").val('-1');
+            $("#searchOption").val("-1");
+        });
+
+    });
+
+    function getUrlVars() {
+        var vars = [], hash;
+        var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+        for (var i = 0; i < hashes.length; i++) {
+            hash = hashes[i].split('=');
+            vars.push(hash[0]);
+            vars[hash[0]] = hash[1];
+        }
+        return vars;
+    }
+</script>
